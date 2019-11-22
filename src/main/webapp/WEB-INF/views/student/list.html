@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>List student</h1>
+    <p>
+        <a href="/create-student">Create student</a>
+    </p>
+    <form action="/searchByCategory" onchange="this.submit()">
+        <a>Search by category</a>
+        <select name="srch">
+            <option value="....."></option>
+            <option th:each="class:${classRoom}" th:text="${class.getClassRoomName()}" th:value="${class.getId()}" th:selected="${class.id}==${srch}"></option>
+        </select>
+    </form>
+    <table border="1">
+        <tr>
+            <td>Student firstName</td>
+            <td>Student lastName</td>
+            <td>Birthday</td>
+            <td>Address</td>
+            <td>Gender</td>
+            <td>Phone</td>
+            <td>Classroom name</td>
+            <td>Classroom description</td>
+            <td>Edit</td>
+            <td>Delete</td>
+        </tr>
+        <th:block th:each="std:${students}">
+            <tr>
+                <td th:text="${std.firstName}"></td>
+                <td th:text="${std.lastName}"></td>
+                <td th:text="${std.birthday}"  th:type="date"></td>
+                <td th:text="${std.address}"></td>
+                <td th:text="${std.gender}"></td>
+                <td th:text="${std.phone}"></td>
+                <td th:text="${std.classRoom.classRoomName}"></td>
+                <td th:text="${std.classRoom.description}"></td>
+                <td>
+                    <a th:href="@{/edit-student/__${std.id}__}">Edit</a>
+                </td>
+                <td>
+                    <a th:href="@{/delete-student/__${std.id}__}" onclick="return confirm('may chac chua')">Delete</a>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+    <div th:if="srch">
+        <a th:href="@{'' (page=${students.number - 1}, srch=${srch})}" th:if="${students.hasPrevious()}">Back</a>
+        <span th:text="${students.number + 1}"></span>/<span th:text="${students.totalPages}"></span>
+        <a th:href="@{'' (page=${students.number + 1})}" th:if="${students.hasNext()}">Next</a>
+    </div>
+    <div th:if="!srch">
+        <a th:href="@{'' (page=${students.number - 1})}" th:if="${students.hasPrevious()}">Back</a>
+        <span th:text="${students.number + 1}"></span>/<span th:text="${students.totalPages}"></span>
+        <a th:href="@{'' (page=${students.number + 1})}" th:if="${students.hasNext()}">Next</a>
+    </div>
+</body>
+</html>

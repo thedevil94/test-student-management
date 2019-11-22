@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List classroom</title>
+</head>
+<body>
+<h1>List classroom</h1>
+<p>
+    <a href="/create-classroom">Create new classroom</a>
+</p>
+<table border="1">
+    <tr>
+        <td>Classroom name</td>
+        <td>Description</td>
+        <td>Edit</td>
+        <td>Delete</td>
+    </tr>
+    <th:block th:each="class : ${classRooms}">
+        <tr>
+            <td th:text="${class.classRoomName}"></td>
+            <td th:text="${class.description}"></td>
+            <td>
+                <a th:href="@{/edit-classroom/__${class.id}__}">Edit</a>
+            </td>
+            <td>
+                <a th:href="@{/delete-classroom/__${class.id}__}" onclick="return confirm('may chac chua')">Delete</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>
